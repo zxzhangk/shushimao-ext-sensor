@@ -1,0 +1,42 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}控制器状态{% endblock %}
+{% block content %}
+    <form class="form-horizontal" name="form" role="form" method="post" action="/">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">当前温度： </label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" disabled name="turn_on" title="turn_on" value="{{ temperature }}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">当前湿度： </label><br/>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" disabled name="turn_on" title="turn_on" value="{{ humidity }}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">设定开启温度：</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" name="turn_on" title="turn_on" value="{{ turnOn }}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">设定停止温度：</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="number" name="turn_off" title="turn_off" value="{{ turnOff }}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-lg" type="submit" name="submit" >修改</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a class="btn btn-lg" href="/">刷新</a>
+                <a class="btn btn-lg" href="/log">日志</a>
+            </div>
+        </div>
+    </form>
+    </br>
+{% endblock %}
