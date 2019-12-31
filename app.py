@@ -9,6 +9,7 @@ import time
 import requests
 import urllib
 import socket
+import conf
 
 dictConfig({
     'version': 1,
@@ -46,7 +47,7 @@ URL = 'http://mk.shushimall.com:8018/cominterface/index.aspx'
 def get_device_status():
     content = ''
     try:
-        form_data = {'cid': 'xx', 'key': 'xx'}
+        form_data = {'cid': conf.GET_DEVICE_STATUS_CID, 'key': conf.GET_DEVICE_STATUS_KEY}
         data = urllib.urlencode(form_data)
         res = requests.post(url=URL, headers=HEADERS, data=data)
         content = res.content
@@ -67,7 +68,7 @@ def set_device_status(current_status, target_status, current_temperature):
                     (current_status, target_status, current_temperature))
     content = ''
     try:
-        form_data = {'mid': 'xxx', 'key': 'xxx', 'dev_type': '8',
+        form_data = {'mid': conf.UPDATE_DEVICE_STATUS_MID, 'key': conf.UPDATE_DEVICE_STATUS_KEY, 'dev_type': '8',
                      'commandvalue': target_status, 'commandcode': 'set_onoff'}
         data = urllib.urlencode(form_data)
         res = requests.post(url=URL, headers=HEADERS, data=data)
@@ -109,7 +110,7 @@ class FlaskApp(Flask):
             while True:
                 data = sock.recv(10240)
                 if count == 0:
-                    count = 15
+                    count = 150
                     current_temperature = get_current_data(data)
                     current_status = get_device_status()
                     sensor_data['current'] = current_temperature
@@ -123,7 +124,7 @@ class FlaskApp(Flask):
                 time.sleep(60)
                 count = count - 1
         t1 = threading.Thread(target=sensor_monitor)
-        t1.start()
+        # t1.start()
 
 
 app = FlaskApp(__name__)
@@ -157,4 +158,5 @@ def test():
 
 
 if __name__ == '__main__':
+    app.config['BOOTSTRAP_SERVE_LOCAL'] = True
     app.run(host='0.0.0.0')
